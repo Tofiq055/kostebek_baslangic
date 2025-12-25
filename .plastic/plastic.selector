@@ -1,0 +1,4 @@
+repository "kostebek_baslangic/kostebek_baslangic@18966921798294@cloud"
+  path "/"
+    br "/main"
+    co "/main"
