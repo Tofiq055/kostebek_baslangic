@@ -4,7 +4,10 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/HandMoleGame.unity
+    guid: 0f0b4b1b6f2e7fb4895ff2da5db4b2d4
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 403d0b5c759a3184ab603bd579afdc64, type: 2}
     com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 01a2e09ecdf79f94483a6fef9e6af376, type: 2}

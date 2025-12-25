@@ -155,7 +155,7 @@ GameObject:
   - component: {fileID: 7691671446391553038}
   m_Layer: 0
   m_Name: Mole
-  m_TagString: Untagged
+  m_TagString: Mole
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -264,6 +264,7 @@ MonoBehaviour:
   visibleY: 0.03
   speed: 0.2
   waitDuration: 2
+  isActive: 0
 --- !u!1 &1004988584642811799
 GameObject:
   m_ObjectHideFlags: 0
@@ -431,7 +432,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7278439441803515857}
@@ -457,6 +458,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 852d8f790f14b37498d4b084ae0404be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnInterval: 5
   moles:
   - {fileID: 4818270348411643174}
   - {fileID: 7691671446391553038}
@@ -467,7 +469,6 @@ MonoBehaviour:
   - {fileID: 7135157475133675538}
   - {fileID: 9153327101607747776}
   - {fileID: 1830915215545835355}
-  spawnInterval: 5
 --- !u!1 &1991987389802282317
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,7 +518,7 @@ GameObject:
   - component: {fileID: 9141434117550356431}
   m_Layer: 0
   m_Name: Mole
-  m_TagString: Untagged
+  m_TagString: Mole
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -626,6 +627,7 @@ MonoBehaviour:
   visibleY: 0.03
   speed: 0.2
   waitDuration: 2
+  isActive: 0
 --- !u!114 &9141434117550356431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -642,6 +644,7 @@ MonoBehaviour:
   visibleY: 0.05
   speed: 3
   waitDuration: 1.5
+  isActive: 0
 --- !u!1 &2694151381954378477
 GameObject:
   m_ObjectHideFlags: 0
@@ -657,7 +660,7 @@ GameObject:
   - component: {fileID: 3344947108084475684}
   m_Layer: 0
   m_Name: Mole
-  m_TagString: Untagged
+  m_TagString: Mole
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -766,6 +769,7 @@ MonoBehaviour:
   visibleY: 0.03
   speed: 0.2
   waitDuration: 2
+  isActive: 0
 --- !u!1 &2789650148008357743
 GameObject:
   m_ObjectHideFlags: 0
@@ -1168,7 +1172,7 @@ GameObject:
   - component: {fileID: 1248108967357958751}
   m_Layer: 0
   m_Name: Mole
-  m_TagString: Untagged
+  m_TagString: Mole
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1277,6 +1281,7 @@ MonoBehaviour:
   visibleY: 0.03
   speed: 0.2
   waitDuration: 2
+  isActive: 0
 --- !u!1 &5027115308867340700
 GameObject:
   m_ObjectHideFlags: 0
@@ -1292,7 +1297,7 @@ GameObject:
   - component: {fileID: 7135157475133675538}
   m_Layer: 0
   m_Name: Mole
-  m_TagString: Untagged
+  m_TagString: Mole
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1401,6 +1406,7 @@ MonoBehaviour:
   visibleY: 0.03
   speed: 0.2
   waitDuration: 2
+  isActive: 0
 --- !u!1 &5133150777701798585
 GameObject:
   m_ObjectHideFlags: 0
@@ -1417,7 +1423,7 @@ GameObject:
   - component: {fileID: 1266706504903360113}
   m_Layer: 0
   m_Name: Mole
-  m_TagString: Untagged
+  m_TagString: Mole
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1526,6 +1532,7 @@ MonoBehaviour:
   visibleY: 0.03
   speed: 0.2
   waitDuration: 2
+  isActive: 0
 --- !u!114 &1266706504903360113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1542,6 +1549,7 @@ MonoBehaviour:
   visibleY: 0.05
   speed: 3
   waitDuration: 1.5
+  isActive: 0
 --- !u!1 &5271605696170119015
 GameObject:
   m_ObjectHideFlags: 0
@@ -1557,7 +1565,7 @@ GameObject:
   - component: {fileID: 3728132660179636566}
   m_Layer: 0
   m_Name: Mole
-  m_TagString: Untagged
+  m_TagString: Mole
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1666,6 +1674,7 @@ MonoBehaviour:
   visibleY: 0.03
   speed: 0.2
   waitDuration: 2
+  isActive: 0
 --- !u!1 &5312123862402518423
 GameObject:
   m_ObjectHideFlags: 0
@@ -1780,7 +1789,7 @@ GameObject:
   - component: {fileID: 4818270348411643174}
   m_Layer: 0
   m_Name: Mole
-  m_TagString: Untagged
+  m_TagString: Mole
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1889,6 +1898,7 @@ MonoBehaviour:
   visibleY: 0.03
   speed: 0.2
   waitDuration: 2
+  isActive: 0
 --- !u!1 &6963646632087753460
 GameObject:
   m_ObjectHideFlags: 0
@@ -2044,7 +2054,7 @@ GameObject:
   - component: {fileID: 3906299165701533606}
   m_Layer: 0
   m_Name: Mole
-  m_TagString: Untagged
+  m_TagString: Mole
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2153,6 +2163,7 @@ MonoBehaviour:
   visibleY: 0.03
   speed: 0.2
   waitDuration: 2
+  isActive: 0
 --- !u!1 &8360251305293290200
 GameObject:
   m_ObjectHideFlags: 0

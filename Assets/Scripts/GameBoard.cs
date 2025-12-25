@@ -4,27 +4,32 @@ using UnityEngine;
 
 public class GameBoard : MonoBehaviour
 {
-    [Header("Köstebebler")]
-    public List<MoleController> moles; // Sahnedeki 9 köstebek
+    [Header("Oyun Ayarları")]
+    // Köstebeklerin ne sıklıkla çıkacağını belirler (Saniye cinsinden).
+    public float spawnInterval = 2.0f; 
 
-    [Header("Oyun Döngüsü")]
-    public float spawnInterval = 2.0f; // Kaç saniyede bir köstebek çıksın?
+    // Sahnedeki tüm mole scriptlerini burada tutacağız.
+    // Inspector'da elle atamazsanız Start fonksiyonu otomatik bulur.
+    public List<MoleController> moles; 
 
     private float timer = 0f;
 
     void Start()
     {
-        // Eğer listeyi elle doldurmayı unutursan, otomatik bul
+        // Eğer liste boşsa, çocuk objelerdeki MoleController'ları bulup ekle
         if (moles == null || moles.Count == 0)
         {
             moles = new List<MoleController>();
-            // Alt objelerdeki (Slotların içindeki) tüm MoleController'ları bul
+            // True parametresi, pasif olan objeleri de dahil eder
             GetComponentsInChildren<MoleController>(true, moles);
         }
     }
 
     void Update()
     {
+        // Moles listesi boşsa hata vermemesi için kontrol
+        if (moles == null || moles.Count == 0) return;
+
         timer += Time.deltaTime;
 
         if (timer >= spawnInterval)
@@ -36,13 +41,14 @@ public class GameBoard : MonoBehaviour
 
     void SpawnRandomMole()
     {
-        // Rastgele bir index seç (0 ile 8 arası)
+        // Rastgele bir köstebek seç
         int randomIndex = Random.Range(0, moles.Count);
-        
-        // O köstebeğe "Çık!" emri ver
-        if (moles[randomIndex] != null)
+        MoleController selectedMole = moles[randomIndex];
+
+        // Seçilen köstebek varsa ve null değilse yukarı çıkar
+        if (selectedMole != null)
         {
-            moles[randomIndex].Rise();
+            selectedMole.Rise();
         }
     }
 }

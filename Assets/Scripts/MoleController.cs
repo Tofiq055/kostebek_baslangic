@@ -3,35 +3,35 @@ using UnityEngine;
 
 public class MoleController : MonoBehaviour
 {
-    // Köstebeğin ne kadar yukarı çıkacağı (Senin mole boyutuna göre 0.08 iyi olabilir)
-    // Başlangıç (Gizli) Y: -0.03
-    // Hedef (Görünür) Y: 0.05 gibi düşünebiliriz.
-    // Bu değerleri editörden elle gireceğiz.
-    
-    [Header("Ayarlar")]
-    public float hiddenY = -0.03f; // Yuvadaki Y konumu
-    public float visibleY = 0.05f; // Yukarıdaki Y konumu
-    public float speed = 3f;       // Çıkış/İniş hızı
-    public float waitDuration = 1.5f; // Yukarıda bekleme süresi
+    // Inspector Ayarları için Başlıklar
+    [Header("Hareket Ayarları")]
+    // Köstebeğin gizli (aşağıda) olduğu Y pozisyonu. Kendi sahnenize göre ayarlayın.
+    public float hiddenY = -0.2f; 
+    // Köstebeğin görünür (yukarıda) olduğu Y pozisyonu.
+    public float visibleY = 0.2f; 
+    // Köstebeğin yukarı çıkış ve iniş hızı.
+    public float speed = 4f; 
+    // Köstebeğin yukarıda kalma süresi (saniye).
+    public float waitDuration = 1.0f; 
+
+    // Köstebeğin şu an yukarıda ve vurulabilir olup olmadığını diğer scriptler buradan kontrol eder.
+    public bool isActive = false; 
 
     private Vector3 targetPosition;
-    private bool isActive = false; // Şu an yukarıda mı?
-
-    // Köstebeğin kendi Transform'u
     private Transform moleTransform;
+    private Coroutine movementCoroutine;
 
     void Awake()
     {
         moleTransform = this.transform;
-        // Başlangıçta hedefimiz gizli konum
+        // Başlangıçta köstebek gizli konumda olmalı
         targetPosition = new Vector3(moleTransform.localPosition.x, hiddenY, moleTransform.localPosition.z);
-        moleTransform.localPosition = targetPosition; // Hemen gizle
+        moleTransform.localPosition = targetPosition;
     }
 
     void Update()
     {
-        // Hedefe doğru yumuşakça (Lerp ile) git
-        // 3D Distance kontrolü yerine basit MoveTowards kullanıyoruz, işlemci dostu.
+        // Hedef pozisyona doğru yumuşak hareket
         moleTransform.localPosition = Vector3.MoveTowards(
             moleTransform.localPosition, 
             targetPosition, 
@@ -39,39 +39,47 @@ public class MoleController : MonoBehaviour
         );
     }
 
-    // Bu fonksiyonu GameBoard çağıracak
+    // GameBoard bu fonksiyonu çağırarak köstebeği yukarı çıkarır
     public void Rise()
     {
-        if (isActive) return; // Zaten yukarıdaysa işlem yapma
+        if (isActive) return; // Zaten aktifse tekrar tetikleme
 
-        StartCoroutine(RiseRoutine());
+        if (movementCoroutine != null) StopCoroutine(movementCoroutine);
+        movementCoroutine = StartCoroutine(RiseRoutine());
     }
 
     private IEnumerator RiseRoutine()
     {
         isActive = true;
-        
-        // 1. Hedefi YUKARI yap
-        targetPosition = new Vector3(moleTransform.localPosition.x, visibleY, moleTransform.localPosition.z);
 
-        // 2. Yukarıda bekle
+        // 1. Yukarı çık
+        targetPosition = new Vector3(moleTransform.localPosition.x, visibleY, moleTransform.localPosition.z);
+        
+        // Yukarı pozisyona ulaşana kadar bekle (yaklaşık süre) veya sabit süre bekle
         yield return new WaitForSeconds(waitDuration);
 
-        // 3. Hedefi AŞAĞI (Gizli) yap
-        targetPosition = new Vector3(moleTransform.localPosition.x, hiddenY, moleTransform.localPosition.z);
-        
-        // Biraz bekle ki tam insin (Animasyon süresi kadar)
-        yield return new WaitForSeconds(0.5f);
-        
-        isActive = false; // Artık yeni emre hazır
+        // 2. Süre dolunca aşağı in (Eğer vurulmadıysa)
+        if (isActive)
+        {
+            Hide();
+        }
     }
-    
-    // Vurulunca çağıracağız (Faz 4 için hazırlık)
+
+    // HandInputManager tarafından çağrılır
     public void OnHit()
     {
-        StopAllCoroutines(); // Beklemeyi iptal et
+        if (!isActive) return;
+
+        // Vurulma işlemlerini burada yapabiliriz (ses, efekt vb.)
+        Hide();
+    }
+
+    private void Hide()
+    {
         isActive = false;
-        // Hemen aşağı indir
+        // Aşağı in
         targetPosition = new Vector3(moleTransform.localPosition.x, hiddenY, moleTransform.localPosition.z);
+        
+        if (movementCoroutine != null) StopCoroutine(movementCoroutine);
     }
 }
