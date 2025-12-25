@@ -8,73 +8,96 @@ public class HandInputManager : MonoBehaviour
 
     [Header("Debug")]
     public bool debugMode = true;
+    public bool showDebugSphere = true;
 
     private Transform indexFingerTip;
     private Camera mainCamera;
+    private GameObject debugSphere;
+    
+    // Titremeyi önlemek için hedef pozisyon takibi
+    private Vector3 targetDebugPos; 
 
     void Start()
     {
         mainCamera = Camera.main;
+
+        if (showDebugSphere)
+        {
+            debugSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            debugSphere.name = "DebugAimSphere";
+            debugSphere.transform.localScale = Vector3.one * 0.1f; 
+            
+            if(debugSphere.GetComponent<Collider>()) 
+                debugSphere.GetComponent<Collider>().enabled = false;
+            
+            Renderer ren = debugSphere.GetComponent<Renderer>();
+            ren.material.color = Color.red;
+            debugSphere.SetActive(false);
+        }
     }
 
     void Update()
     {
-        // 1. Mouse ile Test (Her zaman çalışmalı)
-        if (Input.GetMouseButtonDown(0))
+        if (indexFingerTip == null) FindHandObject();
+        
+        bool isHandActive = (indexFingerTip != null && indexFingerTip.gameObject.activeInHierarchy);
+        
+        if (Input.GetMouseButton(0))
         {
-            Debug.Log("Mouse Tıklandı. Raycast atılıyor...");
-            ShootRay(Input.mousePosition);
+             ShootRay(Input.mousePosition, true);
+        }
+        else if (isHandActive)
+        {
+             Vector3 screenPos = mainCamera.WorldToScreenPoint(indexFingerTip.position);
+             ShootRay(screenPos, true);
+        }
+        else
+        {
+            if(debugSphere) debugSphere.SetActive(false);
         }
 
-        // 2. El Takibi
-        if (indexFingerTip == null)
+        if (debugSphere != null && debugSphere.activeSelf)
         {
-            FindHandObject();
-        }
-        else if (indexFingerTip.gameObject.activeInHierarchy)
-        {
-            // El aktifse, parmak ucundan sürekli ateş et
-            Vector3 screenPos = mainCamera.WorldToScreenPoint(indexFingerTip.position);
-            ShootRay(screenPos);
+            debugSphere.transform.position = Vector3.Lerp(debugSphere.transform.position, targetDebugPos, Time.deltaTime * 15f);
         }
     }
 
     void FindHandObject()
     {
-        // Önce normal ismi dene
         GameObject obj = GameObject.Find(containerName);
-        // Bulamazsan Clone dene
         if (obj == null) obj = GameObject.Find(containerName + "(Clone)");
         
-        if (obj != null)
+        if (obj != null && obj.transform.childCount > fingerTipIndex)
         {
-            if (obj.transform.childCount > fingerTipIndex)
-            {
-                indexFingerTip = obj.transform.GetChild(fingerTipIndex);
-                Debug.Log("EL HEDEFİ BULUNDU: " + indexFingerTip.name);
-            }
+             indexFingerTip = obj.transform.GetChild(fingerTipIndex);
         }
     }
 
-    void ShootRay(Vector3 screenPos)
+    void ShootRay(Vector3 screenPos, bool showSphere)
     {
+        if (debugSphere) debugSphere.SetActive(showSphere);
+
         Ray ray = mainCamera.ScreenPointToRay(screenPos);
-        Debug.DrawRay(ray.origin, ray.direction * 50f, Color.red, 0.1f);
+        
+        // Debug Topu Hedef Pozisyonu
+        Vector3 desiredPos = ray.GetPoint(0.5f);
 
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            if (debugMode) Debug.Log("Vurulan Obje: " + hit.collider.name + " | Tag: " + hit.collider.tag);
+            // Çarpma noktasına doğru çek
+            desiredPos = hit.point - (ray.direction * 0.1f);
 
             if (hit.collider.CompareTag("Mole"))
             {
                 MoleController mole = hit.collider.GetComponent<MoleController>();
-                if (mole != null)
+                if (mole != null && mole.isActive)
                 {
                     mole.OnHit();
-                    // Vuruş anını logla
-                    Debug.Log("KÖSTEBEK VURULDU!");
+                    if(debugMode) Debug.Log("KÖSTEBEK VURULDU!");
                 }
             }
         }
+        
+        targetDebugPos = desiredPos;
     }
 }
