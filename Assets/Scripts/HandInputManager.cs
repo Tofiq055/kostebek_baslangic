@@ -49,6 +49,9 @@ public class HandInputManager : MonoBehaviour
         else if (isHandActive)
         {
              Vector3 screenPos = mainCamera.WorldToScreenPoint(indexFingerTip.position);
+             
+
+
              ShootRay(screenPos, true);
         }
         else
