@@ -22,7 +22,7 @@ A unique Augmented Reality (AR) arcade game where you interact with the game wor
 
 1.  **Clone the Repository**
     ```bash
-    git clone https://github.com/yourusername/kostebek_baslangic.git
+    git clone https://github.com/Tofiq055/kostebek_baslangic.git
     ```
 
 2.  **Open in Unity**
