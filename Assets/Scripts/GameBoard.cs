@@ -24,7 +24,35 @@ public class GameBoard : MonoBehaviour
         if(scoreText != null)
         {
             scoreText.text = "Skor: " + score;
+            StartCoroutine(PulseText());
         }
+    }
+
+    private IEnumerator PulseText()
+    {
+        Vector3 originalScale = Vector3.one;
+        Vector3 targetScale = Vector3.one * 1.5f; // %50 Büyü
+        float duration = 0.1f;
+
+        // Büyü
+        float timer = 0f;
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+            scoreText.transform.localScale = Vector3.Lerp(originalScale, targetScale, timer / duration);
+            yield return null;
+        }
+
+        // Küçül
+        timer = 0f;
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+            scoreText.transform.localScale = Vector3.Lerp(targetScale, originalScale, timer / duration);
+            yield return null;
+        }
+        
+        scoreText.transform.localScale = originalScale;
     }
 
     private float timer = 0f;

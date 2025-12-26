@@ -85,6 +85,9 @@ public class MoleController : MonoBehaviour
 
     private IEnumerator HitAnimation()
     {
+        // ÖNCEKİ RENK EFEKTİNİ GERİ GETİRİYORUZ
+        if (moleRenderer != null) moleRenderer.material.color = Color.red;
+
         float timer = 0f;
         float duration = 0.5f;
         Vector3 initialScale = moleTransform.localScale;
@@ -107,6 +110,10 @@ public class MoleController : MonoBehaviour
         // Animasyon bitince eski haline getir ve gizle
         moleTransform.localScale = initialScale;
         moleTransform.localRotation = initialRot;
+        
+        // Rengi düzeltmeyi unutma
+        if (moleRenderer != null) moleRenderer.material.color = originalColor;
+
         targetPosition = new Vector3(moleTransform.localPosition.x, hiddenY, moleTransform.localPosition.z);
         moleTransform.localPosition = targetPosition;
     }
