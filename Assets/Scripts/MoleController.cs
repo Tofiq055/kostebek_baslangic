@@ -72,22 +72,43 @@ public class MoleController : MonoBehaviour
     {
         if (!isActive) return;
 
-        // Vuruş efekti: Kırmızı ol ve beklemeden in
-        if (movementCoroutine != null) StopCoroutine(movementCoroutine);
-        StartCoroutine(HitRoutine());
+        StopAllCoroutines(); // Mevcut hareketleri ve beklemeleri durdur
+        isActive = false;
+
+        // Puan Ekle
+        GameBoard gb = FindObjectOfType<GameBoard>();
+        if (gb != null) gb.AddScore(10);
+
+        // Animasyonu Başlat
+        StartCoroutine(HitAnimation());
     }
 
-    private IEnumerator HitRoutine()
+    private IEnumerator HitAnimation()
     {
-        isActive = false; 
+        float timer = 0f;
+        float duration = 0.5f;
+        Vector3 initialScale = moleTransform.localScale;
+        Quaternion initialRot = moleTransform.localRotation;
 
-        // Görsel efekt: Kırmızı yan!
-        if (moleRenderer != null) moleRenderer.material.color = Color.red;
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+            float t = timer / duration;
 
-        // Çok kısa bekle
-        yield return new WaitForSeconds(0.15f);
+            // 1. DÖNME (Spin)
+            moleTransform.Rotate(0, 720 * Time.deltaTime, 0); // Hızlıca dön
 
-        Hide();
+            // 2. KÜÇÜLME (Shrink)
+            moleTransform.localScale = Vector3.Lerp(initialScale, Vector3.zero, t);
+
+            yield return null;
+        }
+
+        // Animasyon bitince eski haline getir ve gizle
+        moleTransform.localScale = initialScale;
+        moleTransform.localRotation = initialRot;
+        targetPosition = new Vector3(moleTransform.localPosition.x, hiddenY, moleTransform.localPosition.z);
+        moleTransform.localPosition = targetPosition;
     }
 
     private void Hide()

@@ -2,25 +2,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using TMPro;
+
 public class GameBoard : MonoBehaviour
 {
     [Header("Oyun Ayarları")]
     // Köstebeklerin ne sıklıkla çıkacağını belirler (Saniye cinsinden).
     public float spawnInterval = 2.0f; 
 
+    [Header("Skor")]
+    public TMP_Text scoreText; // Ekranda skoru yazacak yazı
+    private int score = 0;
+
     // Sahnedeki tüm mole scriptlerini burada tutacağız.
     // Inspector'da elle atamazsanız Start fonksiyonu otomatik bulur.
     public List<MoleController> moles; 
+
+    public void AddScore(int amount)
+    {
+        score += amount;
+        if(scoreText != null)
+        {
+            scoreText.text = "Skor: " + score;
+        }
+    }
 
     private float timer = 0f;
 
     void Start()
     {
-        // Eğer liste boşsa, çocuk objelerdeki MoleController'ları bulup ekle
+        // Önce listedeki boş (silinmiş) referansları temizle
+        if (moles != null)
+        {
+            moles.RemoveAll(item => item == null);
+        }
+
+        // Eğer liste boşsa veya temizlendikten sonra boşaldıysa, yeniden bul
         if (moles == null || moles.Count == 0)
         {
             moles = new List<MoleController>();
-            // True parametresi, pasif olan objeleri de dahil eder
+            // Alt objelerdeki (Slotların içindeki) tüm MoleController'ları bul
             GetComponentsInChildren<MoleController>(true, moles);
         }
     }
