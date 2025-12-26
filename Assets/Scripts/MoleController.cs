@@ -7,7 +7,7 @@ public class MoleController : MonoBehaviour
     public float hiddenY = -0.2f; 
     public float visibleY = 0.2f; 
     public float speed = 4f; 
-    public float waitDuration = 1.0f; 
+    public float waitDuration = 2.0f; 
 
     public bool isActive = false; 
 

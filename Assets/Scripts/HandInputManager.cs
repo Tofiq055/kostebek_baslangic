@@ -85,7 +85,12 @@ public class HandInputManager : MonoBehaviour
         // Debug Topu Hedef Pozisyonu
         Vector3 desiredPos = ray.GetPoint(0.5f);
 
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        // HITBOX GENİŞLETME (SphereCast)
+        // Raycast yerine "Kalın Işın" atıyoruz. 
+        // 0.05f yarıçapında bir küre göndererek ıskalamayı zorlaştırıyoruz.
+        float hitRadius = 0.05f; 
+
+        if (Physics.SphereCast(ray, hitRadius, out RaycastHit hit))
         {
             // Çarpma noktasına doğru çek
             desiredPos = hit.point - (ray.direction * 0.1f);
